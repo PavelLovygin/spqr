@@ -93,6 +93,12 @@ func (pi *PSQLInteractor) CompleteMsg(rowCnt int) error {
 	return nil
 }
 
+func (pi *PSQLInteractor) ReadyForQuery() error {
+	return pi.cl.Send(&pgproto3.ReadyForQuery{
+		TxStatus: byte(txstatus.TXIDLE),
+	})
+}
+
 // TEXTOID https://github.com/postgres/postgres/blob/master/src/include/catalog/pg_type.dat#L81
 const TEXTOID = 25
 
@@ -1565,17 +1571,6 @@ func (pi *PSQLInteractor) DropSequence(_ context.Context, name string) error {
 		return err
 	}
 
-	return pi.CompleteMsg(0)
-}
-
-func (pi *PSQLInteractor) Ping(ctx context.Context) error {
-	if err := pi.WriteHeader("ping"); err != nil {
-		spqrlog.Zero.Error().Err(err).Msg("")
-	}
-	if err := pi.WriteDataRow("pong"); err != nil {
-		spqrlog.Zero.Error().Err(err).Msg("")
-		return err
-	}
 	return pi.CompleteMsg(0)
 }
 
