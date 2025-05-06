@@ -106,6 +106,7 @@ type DistributionDefinition struct {
 	ColTypes             []string
 	Replicated           bool
 	AutoIncrementColumns []string
+	AutoIncrementStart   []string
 }
 
 type ShardingRuleDefinition struct {
@@ -123,6 +124,7 @@ type ShardingRuleEntry struct {
 type ReferenceRelationDefinition struct {
 	TableName            string
 	AutoIncrementColumns []string
+	AutoIncrementStart   []string
 }
 
 type KeyRangeBound struct {
@@ -261,6 +263,7 @@ type DistributedRelation struct {
 	DistributionKey      []DistributionKeyEntry
 	ReplicatedRelation   bool
 	AutoIncrementColumns []string
+	AutoIncrementStart   []string
 }
 
 type AttachRelation struct {
@@ -296,7 +299,8 @@ type SequenceSelector struct {
 
 func (*SequenceSelector) iDrop() {}
 
-type RetryMoveTaskGroup struct {}
+type RetryMoveTaskGroup struct{}
+
 func (*RetryMoveTaskGroup) iStatement() {}
 
 // The following constants represent SHOW statements.
